@@ -178,7 +178,18 @@ function xlsx(file) {
 						formatCode: cell.formatCode || 'General'
 					};
 					colWidth = 0;
-					if (val && typeof val === 'string' && !isFinite(val)) { 
+					if (cell.formatCode === "@") {
+				            val = escapeXML(val);
+				            sharedStrings[1]++;
+				            index = sharedStrings[0].indexOf(val);
+				            colWidth = val.length;
+				            if (index < 0) {
+				              index = sharedStrings[0].push(val) - 1; 
+				            }
+				            val = index;
+				            t = 's';
+				          }
+				          else if (val && typeof val === 'string' && !isFinite(val)) { 
 						// If value is string, and not string of just a number, place a sharedString reference instead of the value
 						val = escapeXML(val);
 						sharedStrings[1]++; // Increment total count, unique count derived from sharedStrings[0].length
